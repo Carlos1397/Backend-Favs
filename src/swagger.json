@@ -1,0 +1,327 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API FAVORITE",
+    "description": "El CEO de  Favs  te contrató para desarrollar la versión inicial de su producto",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "localhost"
+    }
+  ],
+  "produces": ["application/json"],
+  "host": "localhost:4000",
+  "basePath": "/v1",
+  "components": {
+    "schemas": {
+      "favorite": {
+        "properties": {
+          "title:": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "title": "Mesa Comedor 8",
+          "description": "Mesa de madera hecha en Perú",
+          "Link": "http://https://assets.tramontina.com.br/upload/tramon/imagens/BEL/10835076PNM001G.png"
+        }
+      },
+      "user": {
+        "properties": {
+          "email:": {
+            "type": "string",
+            "require": true
+          },
+          "password": {
+            "type": "string",
+            "require": true
+          }
+        },
+        "example": {
+          "email": "cviera@gmail.com",
+          "password": "weblogin"
+        }
+      },
+      "token": {
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjM3NTc0OTU3MGU4ZGQ0Y2ZkMDQ3ZSIsImlhdCI6MTY1MDY4NTMwMCwiZXhwIjoxNjUwNzcxNzAwfQ.9LhjSIQGm_vP9jIBf3HHbhlRhXo7ex-TVmT9CI-DTig"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/favs": {
+      "get": {
+        "operationId": "getFavs",
+        "summary": "Get all list of favorites.",
+        "tags": ["/api/favs"],
+        "description": "Retorna toda la lista de favoritos: _id, title, description,link,createAt y updatedAt",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/favorite"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createFavs",
+        "summary": "Creates a new list of favorites.",
+        "tags": ["/api/favs"],
+        "description": "Crea un favorito en la lista de favoritos: _id, title, description,link,createAt y updatedAt",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Access Token.",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "favorite object",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/favorite"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/favorite"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/favs/{id}": {
+      "get": {
+        "tags": ["/api/favs/:id"],
+        "summary": "Find favorite by ID",
+        "description": "Returns a single favorite",
+        "operationId": "getfavoriteById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of favorite to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/favorite"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "favorite not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "putFavsById",
+        "summary": "udpateFavsById a  list of favorites.",
+        "tags": ["/api/favs/:id"],
+        "description": "udpateFavsById un favorito en la lista de favoritos: _id, title, description,link,createAt y updatedAt",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Access Token.",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "favorite object",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/favorite"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/favorite"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteFavsById",
+        "summary": "deleteFavsById a  list of favorites.",
+        "tags": ["/api/favs/:id"],
+        "description": "elimina un favorito en la lista de favoritos: _id, title, description,link,createAt y updatedAt",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Access Token.",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of favorite to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Ok Delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/favorite"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/local/login": {
+      "post": {
+        "tags": ["/auth/local"],
+        "summary": "login user",
+        "description": "",
+        "operationId": "user",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "favorite not found"
+          }
+        }
+      }
+    },
+    "/auth/local/register": {
+      "post": {
+        "tags": ["/auth/local"],
+        "summary": "register user",
+        "description": "registrar",
+        "operationId": "user",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "favorite not found"
+          }
+        }
+      }
+    }
+  }
+}
